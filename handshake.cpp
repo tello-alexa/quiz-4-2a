@@ -27,15 +27,7 @@ int main(int argc, char** argv) {
         printf("Usage: ./handshake <count>\n");
         exit(1);
     }
-
-    /**
-     * Steps to follow:
-     * 1. Get the "count" from cmd args
-     * 2. Create necessary synchronization primitive(s)
-     * 3. Create two threads, one for "SYN" and the other for "ACK"
-     * 4. Provide the threads with necessary args
-     * 5. Update the "query" and "response" functions to synchronize the output
-    */
+    
     // get count from cmd args
     int count = atoi(argv[1]);
 
@@ -44,24 +36,15 @@ int main(int argc, char** argv) {
     condition_variable cv;
     
     // create threads with parameters
-    /*vector<thread> threads;
-    for(int i = 0; i < count; i++) {
-        thread(query, i);
-        thread(response, i);
-    }
-
-    for(size_t j = 0; j < threads.size(); ++j) {
-        threads.at(j).join();
-    }*/
-
-    for(int i = 0; i < count; i++) {
+    for(int i = 0; i < count; i++) { // loops for each line printed
+        // create and run threads
         thread t1(query, i, &m, &cv);
         thread t2(response, &m, &cv);
 
+        // join threads
         t1.join();
         t2.join();
-    }
-    
+    }    
 
     return 0;
 }
